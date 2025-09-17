@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+import scipy.stats as stats
 
 def norm_histogram(histogram):
     """
@@ -8,8 +8,8 @@ def norm_histogram(histogram):
     :param histogram: a numpy ndarray object
     :return: list
     """
-    # please delete the "pass" below and your code starts here...
-    pass
+    total = sum(histogram)
+    return [count / total for count in histogram]
 
 
 def compute_j(histogram, bin_width, num_samples):
@@ -21,7 +21,13 @@ def compute_j(histogram, bin_width, num_samples):
     :param num_samples: int
     :return: float
     """
-    # please delete the "pass" below and your code starts here...
+
+
+
+
+
+
+
     pass
 
 def sweep_n(data, min_val, max_val, min_bins, max_bins):
@@ -45,7 +51,12 @@ def sweep_n(data, min_val, max_val, min_bins, max_bins):
     :param max_bins: int
     :return: list
     """
-    # please delete the "pass" below and your code starts here...
+
+
+
+
+
+
     pass
 
 def find_min(l):
@@ -61,7 +72,13 @@ def find_min(l):
     :param l: list
     :return: dict: {int: float}
     """
-    # please delete the "pass" below and your code starts here...
+
+
+
+
+
+
+
     pass
 
 
@@ -88,7 +105,12 @@ def get_coordinates(data, each_dist):
     :param each_dist: str
     :return: (np.ndarray, np.ndarray)
     """
-    # Your code starts here...
+
+
+
+
+
+
     pass
 
 
@@ -101,7 +123,13 @@ def calculate_distance(x, y):
     :param y: float
     :return: float
     """
-    # Your code starts here...
+
+
+
+
+
+
+
     pass
 
 
@@ -113,7 +141,12 @@ def find_dist(data):
     :param data: dict: {str: float}
     :return: (str, float)
     """
-    # Your code starts here...
+
+
+
+
+
+
     pass
 
 
