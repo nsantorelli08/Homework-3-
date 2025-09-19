@@ -73,6 +73,7 @@ def find_min(l):
     :return: dict: {int: float}
     """
     float_list = []
+
     for value in l:
         float_list.append(float(value))
 
@@ -124,7 +125,6 @@ def get_coordinates(data, each_dist):
     res = stats.probplot(data, dist=dist_map[each_dist], plot=None)
     return res[0]
 
-
 def calculate_distance(x, y):
     # Part B
     """
@@ -137,7 +137,6 @@ def calculate_distance(x, y):
     mid = (x + y) / 2
     distance_calc = ((x - mid) ** 2 + (y - mid) ** 2) ** 0.5
     return float(distance_calc)
-
 
 def find_dist(data):
     # Part B
