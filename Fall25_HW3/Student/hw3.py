@@ -9,8 +9,8 @@ def norm_histogram(histogram):
     :return: list
     """
     total = sum(histogram)
-    return [count / total for count in histogram]
-
+    norm_hist = [count / total for count in histogram]
+    return norm_hist
 
 def compute_j(histogram, bin_width, num_samples):
     """
@@ -21,14 +21,9 @@ def compute_j(histogram, bin_width, num_samples):
     :param num_samples: int
     :return: float
     """
-
-
-
-
-
-
-
-    pass
+    sum_sq = sum(p ** 2 for p in histogram)
+    j_val = (2 / ((num_samples - 1) * bin_width)) - ((num_samples + 1) / ((num_samples - 1) * bin_width)) * sum_sq
+    return j_val
 
 def sweep_n(data, min_val, max_val, min_bins, max_bins):
     """
@@ -51,13 +46,18 @@ def sweep_n(data, min_val, max_val, min_bins, max_bins):
     :param max_bins: int
     :return: list
     """
+    j_values = []
+    num_samples = len(data)
 
+    for n_bins in range(min_bins, max_bins + 1):
+        bin_width = (max_val - min_val) / n_bins
+        counts, bins, patches = plt.hist(data, bins=n_bins, range=(min_val, max_val))
+        probabilities = norm_histogram(counts)
+        j_val = compute_j(probabilities, bin_width, num_samples)
+        j_values.append(j_val)
+        plt.clf()
 
-
-
-
-
-    pass
+    return j_values
 
 def find_min(l):
     """
@@ -72,29 +72,36 @@ def find_min(l):
     :param l: list
     :return: dict: {int: float}
     """
+    float_list = []
+    for value in l:
+        float_list.append(float(value))
 
+    pairs = []
+    for i in range(len(float_list)):
+        pairs.append([float_list[i], i])
 
+    result = {}
 
+    for i in range(3):
+        if not pairs:
+            break
+        min_val = pairs[0][0]
+        min_index = pairs[0][1]
+        min_pos = 0
+        for j in range(1, len(pairs)):
+            if pairs[j][0] < min_val:
+                min_val = pairs[j][0]
+                min_index = pairs[j][1]
+                min_pos = j
+        result[min_index] = min_val
+        pairs.pop(min_pos)
 
-
-
-
-    pass
-
-
-
-
+    return result
 
 # ============================== P2 ==================================
 
-
-import scipy.stats as stats
-import numpy as np
-
-
 def get_data(filename):
     return np.loadtxt(filename)
-
 
 def get_coordinates(data, each_dist):
     # Part B
@@ -105,13 +112,14 @@ def get_coordinates(data, each_dist):
     :param each_dist: str
     :return: (np.ndarray, np.ndarray)
     """
-
-
-
-
-
-
-    pass
+    dist_map = {
+        'norm': 'norm',
+        'expon': 'expon',
+        'uniform': 'uniform',
+        'wald': 'wald'
+    }
+    res = stats.probplot(data, dist=dist_map[each_dist], plot=None)
+    return res[0]
 
 
 def calculate_distance(x, y):
@@ -123,14 +131,9 @@ def calculate_distance(x, y):
     :param y: float
     :return: float
     """
-
-
-
-
-
-
-
-    pass
+    mid = (x + y) / 2
+    distance_calc = ((x - mid) ** 2 + (y - mid) ** 2) ** 0.5
+    return float(distance_calc)
 
 
 def find_dist(data):
@@ -141,14 +144,8 @@ def find_dist(data):
     :param data: dict: {str: float}
     :return: (str, float)
     """
-
-
-
-
-
-
-    pass
-
+    min_dist = min(data, key=data.get)
+    return (min_dist, data[min_dist])
 
 def main(data_file):
     """
@@ -159,10 +156,12 @@ def main(data_file):
     data = get_data(data_file)
     dists = ("norm", "expon", "uniform", "wald")
     sum_err = [0] * 4
+
     for ind, each_dist in enumerate(dists):
         X, Y = get_coordinates(data, each_dist)
         for x, y in zip(X, Y):
             sum_err[ind] += calculate_distance(x, y)
+
     return find_dist(dict(zip(dists, sum_err)))
 
 
@@ -180,13 +179,13 @@ if __name__ == "__main__":
     print(find_min(js))
   ############### Uncomment for P2 #################
 
-    # for each_dataset in [
-    #     "sample_norm.csv",
-    #     "sample_expon.csv",
-    #     "sample_uniform.csv",
-    #     "sample_wald.csv",
-    #     "distA.csv",
-    #     "distB.csv",
-    #     "distC.csv",
-    # ]:
-    #     print(main(each_dataset))
+for each_dataset in [
+    "sample_norm.csv",
+    "sample_expon.csv",
+    "sample_uniform.csv",
+    "sample_wald.csv",
+    "distA.csv",
+    "distB.csv",
+    "distC.csv",
+     ]:
+    print(main(each_dataset))
