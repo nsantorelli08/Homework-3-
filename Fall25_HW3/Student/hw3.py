@@ -77,6 +77,7 @@ def find_min(l):
         float_list.append(float(value))
 
     pairs = []
+
     for i in range(len(float_list)):
         pairs.append([float_list[i], i])
 
@@ -85,13 +86,15 @@ def find_min(l):
     for i in range(3):
         if not pairs:
             break
-        min_val = pairs[0][0]
-        min_index = pairs[0][1]
+        first_value, first_index = pairs[0]
+        min_val = first_value
+        min_index = first_index
         min_pos = 0
         for j in range(1, len(pairs)):
-            if pairs[j][0] < min_val:
-                min_val = pairs[j][0]
-                min_index = pairs[j][1]
+            current_value, current_index = pairs[j]
+            if current_value < min_val:
+                min_val = current_value
+                min_index = current_index
                 min_pos = j
         result[min_index] = min_val
         pairs.pop(min_pos)
@@ -156,12 +159,10 @@ def main(data_file):
     data = get_data(data_file)
     dists = ("norm", "expon", "uniform", "wald")
     sum_err = [0] * 4
-
     for ind, each_dist in enumerate(dists):
         X, Y = get_coordinates(data, each_dist)
         for x, y in zip(X, Y):
             sum_err[ind] += calculate_distance(x, y)
-
     return find_dist(dict(zip(dists, sum_err)))
 
 
